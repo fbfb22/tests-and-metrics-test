@@ -8,3 +8,4 @@ Readme. Notes:
 - There was no time to create a library from ntt.c and curl_imp.c
 - The program is not 100% tested.
 - There was no time to write a makefile. Visual studio was used to comile and test.
+- Many other things that have to be improved.
