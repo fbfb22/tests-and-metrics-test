@@ -9,3 +9,4 @@ Readme. Notes:
 - The program is not 100% tested.
 - The makefile is not tested as there was no linux pc available.
 - Visual studio was used to comile and test.
+- Many other things that have to be improved.
