@@ -7,4 +7,5 @@ Readme. Notes:
 - Another implementation can be registered by calling Ntt-Register function.
 - There was no time to create a library from ntt.c and curl_imp.c
 - The program is not 100% tested.
-- There was no time to write a makefile. Visual studio was used to comile and test.
+- The makefile is not tested as there was no linux pc available.
+- Visual studio was used to comile and test.

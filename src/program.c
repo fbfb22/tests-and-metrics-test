@@ -1,18 +1,27 @@
 #include <stdio.h>
 #include "getopt.h"
 #include "ntt.h"
+#define MAX_HEADERS 10
 
 int main(int argc, char ** argv)
 {
 	char *nvalc = NULL;
-	char * headers[100];
+	char * headers[MAX_HEADERS];
+	char * host = "www.google.com";
 	opterr = 0;
 	int c;
 	int headerCount = 0;
-	while ((c = getopt(argc, argv, "H:n:")) != -1)
+	while ((c = getopt(argc, argv, "H:n:s:")) != -1)
 		switch (c)
 		{
+			case 's':
+				host = optarg;
 			case 'H':
+				if (headerCount >= MAX_HEADERS)
+				{
+					fprintf(stderr, "Too many headers. Max is %d\n", MAX_HEADERS);
+					return 0;
+				}
 				headers[headerCount] = optarg;
 				headerCount++;
 				break;
@@ -30,7 +39,8 @@ int main(int argc, char ** argv)
 						optopt);
 				return 1;
 			default:
-				abort();
+				fprintf(stderr, "Error.\n");
+				return 0;
 		}
 
 	int nval = nvalc == NULL ? 1 : atoi(nvalc);
@@ -38,16 +48,16 @@ int main(int argc, char ** argv)
 	if (ret == 0)
 	{
 		fprintf(stderr, "Failed initialization of 'library'.\n");
-		goto pressAKey;
+		return 0;
 	}
 
 	const NttHandle nh = Ntt_GetHandle("CURL");
 	if(nh == NULL)
 	{
 		fprintf(stderr, "No CURL implementations found.\n");
-		goto pressAKey;
+		return 0;
 	}
-	const char * addr = "www.google.com";
+	const char * addr = host;
 	NttStats sts;
 	int v = Ntt_DoTest(nh, addr, nval, headers, headerCount, 1, &sts);
 	if (v == 0)
@@ -59,9 +69,9 @@ int main(int argc, char ** argv)
 	else
 	{
 		fprintf(stderr, "Unexpected error\n");
+		return 0;
 	}
-pressAKey:
-	getchar();
-	return 0;
+
+	return 1;
 }
 
